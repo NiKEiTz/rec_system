@@ -73,6 +73,7 @@ def cosine_sim_users(user_a, user_b, user_ratings):
     if norm_a == 0 or norm_b == 0:
         return 0.0
     
+    # Косинусное сходство [0;1]
     return dot / (norm_a * norm_b)
 
 # -------------------------------------------------

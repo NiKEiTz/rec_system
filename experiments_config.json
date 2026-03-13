@@ -1,0 +1,92 @@
+{
+  "tests": [
+    {
+      "name": "boost_1.0",
+      "type": "boost_factor",
+      "alpha": 0.5,
+      "boost_factor": 1.0,
+      "k_neighbors": 10,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Без усиления пересечений"
+    },
+    {
+      "name": "boost_1.5",
+      "type": "boost_factor",
+      "alpha": 0.5,
+      "boost_factor": 1.5,
+      "k_neighbors": 10,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Умеренное усиление (рекомендуется)"
+    },
+    {
+      "name": "boost_2.0",
+      "type": "boost_factor",
+      "alpha": 0.5,
+      "boost_factor": 2.0,
+      "k_neighbors": 10,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Агрессивное усиление"
+    },
+    {
+      "name": "boost_2.5",
+      "type": "boost_factor",
+      "alpha": 0.5,
+      "boost_factor": 2.5,
+      "k_neighbors": 10,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Очень агрессивное усиление"
+    },
+    {
+      "name": "k_5",
+      "type": "k_neighbors",
+      "alpha": 0.5,
+      "boost_factor": 1.5,
+      "k_neighbors": 5,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Мало соседей"
+    },
+    {
+      "name": "k_10",
+      "type": "k_neighbors",
+      "alpha": 0.5,
+      "boost_factor": 1.5,
+      "k_neighbors": 10,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Оптимальное число соседей"
+    },
+    {
+      "name": "k_20",
+      "type": "k_neighbors",
+      "alpha": 0.5,
+      "boost_factor": 1.5,
+      "k_neighbors": 20,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Много соседей"
+    },
+    {
+      "name": "k_30",
+      "type": "k_neighbors",
+      "alpha": 0.5,
+      "boost_factor": 1.5,
+      "k_neighbors": 30,
+      "top_k_per_item": 5,
+      "n_candidates": 50,
+      "n_final": 10,
+      "description": "Очень много соседей"
+    }
+  ]
+}

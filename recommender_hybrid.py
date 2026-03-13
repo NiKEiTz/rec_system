@@ -8,11 +8,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm  # Прогресс-бар
 
 # ════════════════════════════════════════════════════════════════════
-# 1. ЗАГРУЗКА ДАННЫХ
+# 1. ЗАГРУЗКА ДАННЫХ (Leave-one-out)
 # ════════════════════════════════════════════════════════════════════
 
-def load_data(ratings_path: str, movies_path: str, test_ratio: float = 0.2, seed: int = 42):
-    """Загрузка данных из MovieLens"""
+def load_data(ratings_path: str, movies_path: str, seed: int = 42): 
+    """
+    Leave-One-Out: для каждого пользователя скрываем 1 случайную оценку в тест
+    """
     print("📥 Загрузка данных...")
     ratings = pd.read_csv(
         ratings_path,
@@ -30,17 +32,22 @@ def load_data(ratings_path: str, movies_path: str, test_ratio: float = 0.2, seed
     )
     movie_id_to_title = dict(zip(movies['movie_id'], movies['title']))
     
-    # Разделение на train/test
-    if test_ratio > 0:
-        test_size = int(len(ratings) * test_ratio)
-        ratings_shuffled = ratings.sample(frac=1, random_state=seed).reset_index(drop=True)
-        train_ratings = ratings_shuffled.iloc[test_size:].copy()
-        test_ratings = ratings_shuffled.iloc[:test_size].copy()
-    else:
-        train_ratings = ratings.copy()
-        test_ratings = pd.DataFrame()
+    # Для каждого пользователя выбираем 1 случайную оценку для теста
+    np.random.seed(seed)
+    test_ratings_list = []
     
-    print(f"   Загружено: {len(ratings)} оценок, {ratings['user_id'].nunique()} пользователей, {ratings['movie_id'].nunique()} фильмов")
+    for user_id, group in ratings.groupby('user_id'):
+        if len(group) > 1:  # У пользователя должно быть >1 оценки
+            test_row = group.sample(n=1)
+            test_ratings_list.append(test_row)
+    
+    test_ratings = pd.concat(test_ratings_list)
+    train_ratings = ratings.drop(test_ratings.index)
+    
+    print(f"   Всего пользователей: {ratings['user_id'].nunique()}")
+    print(f"   Train: {len(train_ratings)} оценок")
+    print(f"   Test:  {len(test_ratings)} оценок (по 1 на пользователя)")
+    
     return train_ratings, test_ratings, movie_id_to_title
 
 # ════════════════════════════════════════════════════════════════════
@@ -355,15 +362,14 @@ if __name__ == "__main__":
     # Параметры
     RATING_FILE = "data/ratings.dat"
     MOVIE_FILE = "data/movies.dat"
-    TEST_RATIO = 0.2
     
     HYPERPARAMS = {
         'alpha': 0.5,
-        'boost_factor': 1.5,
-        'k_neighbors': 10,
-        'top_k_per_item': 5,
-        'n_candidates': 50,
-        'n_final': 10
+        'boost_factor': 1.5,        # Важность пересечения
+        'k_neighbors': 30,          # ub 30 похожих пользователей
+        'top_k_per_item': 10,       # ib 10 фильмов, похожих на каждый
+        'n_candidates': 50,         # 50 фильмов, которые попали в топ
+        'n_final': 25               # Итог по пользователю
     }
     
     print("=" * 70)
@@ -371,7 +377,7 @@ if __name__ == "__main__":
     print("=" * 70)
     
     # Загрузка данных
-    train_df, test_df, id2title = load_data(RATING_FILE, MOVIE_FILE, test_ratio=TEST_RATIO)
+    train_df, test_df, id2title = load_data(RATING_FILE, MOVIE_FILE)
     
     # Построение матриц
     all_users = sorted(pd.concat([train_df['user_id'], test_df['user_id']]).unique())
@@ -421,23 +427,6 @@ if __name__ == "__main__":
     print(f"   Hit Rate @10:    {hr:.4f}")
     print(f"   Precision @10:   {prec:.4f}")
     print(f"   Recall @10:      {rec:.4f}")
-    
-    # Эксперимент с гиперпараметрами
-    print("\n🔬 Эксперимент с гиперпараметрами (boost_factor):")
-    
-    for boost in [1.0, 1.5, 2.0]:
-        params = HYPERPARAMS.copy()
-        params['boost_factor'] = boost
-        
-        hr_test = hit_rate_at_k_optimized(
-            hybrid_recommendations_optimized,
-            user_item_train, user_item_test,
-            user_sim_topk, item_sim_topk,
-            user_idx_train, item_idx_train,
-            max_test_users=200,
-            **params
-        )
-        print(f"   boost_factor={boost:.1f} → Hit Rate: {hr_test:.4f}")
     
     # Интерактивный режим
     print("\n" + "=" * 70)
