@@ -25,8 +25,7 @@ def prepare_data():
     print("📥 Загрузка данных...")
     train_df, test_df, _ = load_data(
         "data/ratings.dat", 
-        "data/movies.dat", 
-        test_ratio=0.2
+        "data/movies.dat"
     )
     
     all_users = sorted(pd.concat([train_df['user_id'], test_df['user_id']]).unique())

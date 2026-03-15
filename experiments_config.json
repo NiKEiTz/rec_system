@@ -5,10 +5,10 @@
       "type": "boost_factor",
       "alpha": 0.5,
       "boost_factor": 1.0,
-      "k_neighbors": 10,
-      "top_k_per_item": 5,
+      "k_neighbors": 30,
+      "top_k_per_item": 10,
       "n_candidates": 50,
-      "n_final": 10,
+      "n_final": 25,
       "description": "Без усиления пересечений"
     },
     {
@@ -16,44 +16,33 @@
       "type": "boost_factor",
       "alpha": 0.5,
       "boost_factor": 1.5,
-      "k_neighbors": 10,
-      "top_k_per_item": 5,
+      "k_neighbors": 30,
+      "top_k_per_item": 10,
       "n_candidates": 50,
-      "n_final": 10,
-      "description": "Умеренное усиление (рекомендуется)"
+      "n_final": 25,
+      "description": "Умеренное усиление (базовое значение)"
     },
     {
       "name": "boost_2.0",
       "type": "boost_factor",
       "alpha": 0.5,
       "boost_factor": 2.0,
-      "k_neighbors": 10,
-      "top_k_per_item": 5,
+      "k_neighbors": 30,
+      "top_k_per_item": 10,
       "n_candidates": 50,
-      "n_final": 10,
-      "description": "Агрессивное усиление"
+      "n_final": 25,
+      "description": "Сильное усиление"
     },
     {
       "name": "boost_2.5",
       "type": "boost_factor",
       "alpha": 0.5,
       "boost_factor": 2.5,
-      "k_neighbors": 10,
-      "top_k_per_item": 5,
+      "k_neighbors": 30,
+      "top_k_per_item": 10,
       "n_candidates": 50,
-      "n_final": 10,
-      "description": "Очень агрессивное усиление"
-    },
-    {
-      "name": "k_5",
-      "type": "k_neighbors",
-      "alpha": 0.5,
-      "boost_factor": 1.5,
-      "k_neighbors": 5,
-      "top_k_per_item": 5,
-      "n_candidates": 50,
-      "n_final": 10,
-      "description": "Мало соседей"
+      "n_final": 25,
+      "description": "Очень сильное усиление"
     },
     {
       "name": "k_10",
@@ -61,10 +50,10 @@
       "alpha": 0.5,
       "boost_factor": 1.5,
       "k_neighbors": 10,
-      "top_k_per_item": 5,
+      "top_k_per_item": 10,
       "n_candidates": 50,
-      "n_final": 10,
-      "description": "Оптимальное число соседей"
+      "n_final": 25,
+      "description": "Мало соседей (10)"
     },
     {
       "name": "k_20",
@@ -72,10 +61,10 @@
       "alpha": 0.5,
       "boost_factor": 1.5,
       "k_neighbors": 20,
-      "top_k_per_item": 5,
+      "top_k_per_item": 10,
       "n_candidates": 50,
-      "n_final": 10,
-      "description": "Много соседей"
+      "n_final": 25,
+      "description": "Умеренное число соседей (20)"
     },
     {
       "name": "k_30",
@@ -83,10 +72,21 @@
       "alpha": 0.5,
       "boost_factor": 1.5,
       "k_neighbors": 30,
-      "top_k_per_item": 5,
+      "top_k_per_item": 10,
       "n_candidates": 50,
-      "n_final": 10,
-      "description": "Очень много соседей"
+      "n_final": 25,
+      "description": "Базовое значение (30)"
+    },
+    {
+      "name": "k_50",
+      "type": "k_neighbors",
+      "alpha": 0.5,
+      "boost_factor": 1.5,
+      "k_neighbors": 50,
+      "top_k_per_item": 10,
+      "n_candidates": 50,
+      "n_final": 25,
+      "description": "Много соседей (50)"
     }
   ]
 }
